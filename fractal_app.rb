@@ -5,8 +5,8 @@ require 'wx'
 class MyApp < Wx::App
 
   def on_init
-    width = 1000
-    height = 1000
+    width = 1600
+    height = 1200
     #Containing frame.
     frame = Wx::Frame.new(nil, :size => [width, height])
     frame.show
@@ -24,30 +24,35 @@ class MyApp < Wx::App
         surface.brush = Wx::WHITE_BRUSH
         surface.draw_rectangle(0, 0, width, height)
         end
-      
+          start = Time.now    
+          
+        fractal = Fractal.new(nil, nil, nil)
+        lines = [[400,750,1100,760]]
+        20.times do
+        lines.each{|line|
+        draw_lines = fractal.tick(line)
+        lines += draw_lines                           #дописываем в конец массива линий две "из первой раздробленной"
+        draw_lines.unshift(lines.shift)              #перенесение раздробленной линии во временный массив для прорисовки
     #Draw line.
       buffer.draw do |surface|
-        surface.pen = Wx::Pen.new(Wx::Colour.new(201, 0, 50),1)
-        surface.pen.cap = Wx::CAP_ROUND
-        start = Time.now
-        #[400,400,300,10],[400,400,150,-150],[700,410,-150,-160]
-#рисунок точками при 20 итерациях почти такой же как линиями
-        #~ fractal = Fractal.new([[400,750,1100,760]], "tick", 20)
-        #~ fractal.draw.each{|a|
-        #~ surface.draw_point(a[0].to_i, a[1].to_i)
-        #~ surface.draw_point(a[2].to_i, a[3].to_i)
-        
-        fractal = Fractal.new([[400,400,300,0]], "tick", 3)
-        fractal.draw.each{|a|
-        surface.draw_line(a[0].to_i, a[1].to_i, a[2].to_i, a[3].to_i)
-        }
+        draw_lines.each_with_index{|a, index| #первая линия из массива была раздроблена - она рисуется белым, две последние только что дописаны в массив
+            if index == 0
+              surface.pen = Wx::Pen.new(Wx::Colour.new(255, 255, 255),1)
+            else
+              surface.pen = Wx::Pen.new(Wx::Colour.new(201, 0, 50),1)
+            end
+          surface.pen.cap = Wx::CAP_ROUND
+          surface.draw_line(a[0].to_i, a[1].to_i, a[2].to_i, a[3].to_i)
+          } # конец прорисовки
+        end #конец рисования в буфер
+    #Update screen
+        update_window(window, buffer)
+        } # конец обработки очередной линии из массива lines
+        end #конец итерации
+        update_window(window, buffer)
         puts Time.now-start
-      end
-      
-    #Update screen.
-    update_window(window, buffer)
-    sleep 0.1
-    end
+        sleep 0.1
+        end
 
     def update_window(window, buffer)
           window.paint do |dc|
