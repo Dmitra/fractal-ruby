@@ -23,22 +23,25 @@ class MyApp < Wx::App
         surface.pen = Wx::Pen.new(Wx::Colour.new(0, 0, 0), 0)
         surface.brush = Wx::WHITE_BRUSH
         surface.draw_rectangle(0, 0, width, height)
-        end
-        start = Time.now
-      
+    end
+    start = Time.now    
+    fractal = Fractal.new([[600,400, -200, 0],[400,400,100,-(3**0.5)*100],[500,400-(3**0.5)*100, 100,100*(3**0.5)]], "snow", 5)
+    fractal.absolute.zoom(5)
+#  fractal = Fractal.new([[400,750,700,0]], "tick", 4).absolute
+        
+            #Draw line.
       buffer.draw do |surface|
-        surface.pen = Wx::Pen.new(Wx::Colour.new(201, 0, 50),1)
-        surface.pen.cap = Wx::CAP_ROUND
-        fractal = Fractal.new([[400,750,700,10]], "tick", 20)
-        fractal.draw.each{|a|
-        surface.draw_line(a[0].to_i, a[1].to_i, a[2].to_i, a[3].to_i)
-        }
-        puts Time.now-start
-      end
+        fractal.draw.each_with_index{|a, index| 
+          surface.pen = Wx::Pen.new(Wx::Colour.new(201, 0, 50),1)
+          surface.pen.cap = Wx::CAP_ROUND
+          surface.draw_line(a[0].to_i, a[1].to_i, a[2].to_i, a[3].to_i)
+        } # конец прорисовки
+      end #конец рисования в буфер
       
-    #Update screen.
-    update_window(window, buffer)
-    sleep 0.1
+      #Update screen
+        update_window(window, buffer)
+        puts Time.now-start
+        sleep 0.1
     end
 
     def update_window(window, buffer)
