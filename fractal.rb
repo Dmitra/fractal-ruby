@@ -24,7 +24,7 @@ class Fractal
        end
        return self
    end     
-  def tick(coor) #галочка
+  def tick(coor, spin = "counterclockwise") #галочка
      result = []
      x1=0
      y1=0
@@ -41,8 +41,11 @@ class Fractal
      c = m/(2*Math.sin(alpha+beta))
      a = Math.cos(beta)*c
      b = Math.sin(beta)*c
-     x3 = a
-     y3 = -b
+     if spin == "clockwise"
+       x3 = b;  y3 = a
+     else 
+       x3 = a;  y3 = -b
+     end
      [[x1,y1, x3,y3],[x3,y3, x, y]].each{|line| line[0]+=coor[0]; line[1]+=coor[1]; line[2]+=coor[0]; line[3]+=coor[1]
       result << line}
     result
@@ -83,6 +86,27 @@ class Fractal
          }
          @array = result
       }
+    when "tree1"
+      half1 = @array
+      half2 = @array 
+      @iter.times{
+        half1.each{|line|
+          arr = self.divide(2, line)
+          result += [arr[0]] + self.tick(arr[1], "clockwise")
+          result.shift
+        }
+        half1 = result
+      }
+      result = @array #refresh result with initial value
+      @iter.times{
+        half2.each{|line|
+          arr = self.divide(2, line)
+          result += [arr[0]] + self.tick(arr[1], "counterclockwise")
+          result.shift
+        }
+        half2 = result
+      }
+      @array = half1 + half2
     end
     return @array
   end

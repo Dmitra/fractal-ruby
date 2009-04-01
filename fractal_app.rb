@@ -25,9 +25,10 @@ class MyApp < Wx::App
         surface.draw_rectangle(0, 0, width, height)
     end
     start = Time.now    
-    fractal = Fractal.new([[600,400, -200, 0],[400,400,100,-(3**0.5)*100],[500,400-(3**0.5)*100, 100,100*(3**0.5)]], "snow", 5)
-    fractal.absolute.zoom(5)
-#  fractal = Fractal.new([[400,750,700,0]], "tick", 4).absolute
+#    fractal = Fractal.new([[600,400, -200, 0],[400,400,100,-(3**0.5)*100],[500,400-(3**0.5)*100, 100,100*(3**0.5)]], "snow", 5)
+    fractal = Fractal.new([[800,1000,800,100]], "tree1", 6)
+#    fractal.absolute.zoom(5)
+#    fractal = Fractal.new([[400,750,700,0]], "tick", 4).absolute
         
             #Draw line.
       buffer.draw do |surface|
