@@ -1,8 +1,9 @@
 require 'rubygems'
+require 'Line.rb'
 require 'fractal.rb'
 require 'wx'
 
-class MyApp < Wx::App
+class FractalApp < Wx::App
 
   def on_init
     width = 1600
@@ -25,17 +26,25 @@ class MyApp < Wx::App
         surface.draw_rectangle(0, 0, width, height)
     end
     start = Time.now    
-#    fractal = Fractal.new([[600,400, -200, 0],[400,400,100,-(3**0.5)*100],[500,400-(3**0.5)*100, 100,100*(3**0.5)]], "snow", 5)
-    fractal = Fractal.new([[800,1000,800,100]], "tree1", 6)
-#    fractal.absolute.zoom(5)
-#    fractal = Fractal.new([[400,750,700,0]], "tick", 4).absolute
+    
+    line1 = Line.new(400,750,700,0).absolute
+    fractal1 = Fractal.new(line1, "tick", 6)
+    
+    triangle = Triangle.new(Line.new(600,400, -200, 0),
+      Line.new(400,400,100,-(3**0.5)*100),
+      Line.new(500,400-(3**0.5)*100, 100,100*(3**0.5)))
+    
+    fractal2 = Fractal.new(triangle, "snow", 5)
+    line2 = Line.new(800,1000,800,100)
+    triangle.absolute.zoom(5)
+    fractal3 = Fractal.new(line2, "tree1", 6)
         
             #Draw line.
       buffer.draw do |surface|
-        fractal.draw.each_with_index{|a, index| 
+        fractal3.draw.each_with_index{|a, index| 
           surface.pen = Wx::Pen.new(Wx::Colour.new(201, 0, 50),1)
           surface.pen.cap = Wx::CAP_ROUND
-          surface.draw_line(a[0].to_i, a[1].to_i, a[2].to_i, a[3].to_i)
+          surface.draw_line(a.coord[0].to_i, a.coord[1].to_i, a.coord[2].to_i, a.coord[3].to_i)
         } # конец прорисовки
       end #конец рисования в буфер
       
@@ -54,5 +63,5 @@ class MyApp < Wx::App
 
 end
 
-app = MyApp.new
+app = FractalApp.new
 app.main_loop
