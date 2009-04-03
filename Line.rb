@@ -2,10 +2,14 @@ require 'Shape.rb'
 
 class Line < Shape
   attr_accessor :coord
-  @@counter = 0
   def initialize(coor1, coor2, coor3, coor4)
     @coord = [coor1, coor2, coor3, coor4]
-    @array = [@coord] #this is array of coordinates, required by parent Shape class
+  end
+  def array #this is array of coordinates, required by parent Shape class
+    [@coord]
+  end
+  def array=(item)
+    @coord=item[0]
   end
   def tick(spin = "counterclockwise") #галочка
      result = []
@@ -18,9 +22,10 @@ class Line < Shape
      beta = 135.0.to_r - alpha
      #puts "beta in degree: #{beta.to_deg}"
      alpha_deg = alpha.to_deg
-     if alpha_deg == 0.0
-          m = -y
-     elsif alpha_deg == 180.0
+     if (alpha_deg < 0.1 and alpha_deg > -0.1)
+       alpha = 0.0   
+       m = -y
+     elsif (alpha_deg < 180.1 and alpha_deg > 179.9)
           m = y
      else m = x/Math.sin(alpha)
      end
