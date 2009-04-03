@@ -11,7 +11,7 @@ class Line < Shape
   def array=(item)
     @coord=item[0]
   end
-  def tick(spin = "counterclockwise") #галочка
+  def tick(spin = "counterclockwise", angle=45) #галочка
      result = []
      x1=0
      y1=0
@@ -19,7 +19,7 @@ class Line < Shape
      y = coord[3].to_f - coord[1].to_f
      alpha = Math.atan(y/x)+90.0.to_r    #вычисляем угол наклона отрезка к горизонтали в радианах; 90 - угол смещения координатной сетки приложения к декартовой
      #puts "alpha in degree: #{alpha.to_deg}"
-     beta = 135.0.to_r - alpha
+     beta = angle.to_f.to_r + 90.0.to_r - alpha
      #puts "beta in degree: #{beta.to_deg}"
      alpha_deg = alpha.to_deg
      if (alpha_deg < 0.1 and alpha_deg > -0.1)

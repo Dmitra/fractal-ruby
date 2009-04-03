@@ -11,18 +11,24 @@ class Fractal
     when "tick" 
       @iter.times{
         @shape.each{|line|
-        @shape += line.tick                     #дописываем в конец массива линий две "из первой раздробленной"
-        @shape.shift                            #удаление раздробленной линии
+        @shape += line.tick("counterclockwise", 45)  #дописываем в конец массива линий две "из первой раздробленной"
+        @shape.shift                                 #удаление раздробленной линии
+        } #end of ticking
+      } #end of iterations
+    when "pyramid" 
+      @iter.times{
+        @shape.each{|line|
+        @shape += line.tick("counterclockwise", 60)  #дописываем в конец массива линий две "из первой раздробленной"
+        @shape.shift                                 #удаление раздробленной линии
         } #end of ticking
       } #end of iterations
     when "snow"
       @iter.times{
         @shape.each{|line|
          arr = line.divide(3)
-         result += [arr[0]] + arr[1].tick + [arr[2]]
+         result += [arr[0]] + arr[1].tick("counterclockwise", 80) + [arr[2]]
          result.shift
-         }
-         @shape = result
+        }; @shape = result
       }
     when "tree1"
       half1 = @shape
