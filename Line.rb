@@ -5,27 +5,38 @@ class Line < Shape
   def initialize(coor1, coor2, coor3, coor4)
     @coord = [coor1, coor2, coor3, coor4]
   end
+  def self.create(arr)
+      Line.new(arr[0],arr[1],arr[2],arr[3])
+  end
   def array #this is array of coordinates, required by parent Shape class
     [@coord]
   end
   def array=(item)
     @coord=item[0]
   end
+  def x #lengh of Line by X axis
+    coord[2].to_f - coord[0].to_f
+  end
+  def y #lengh of Line by Y axis
+    coord[3].to_f - coord[1].to_f
+  end
+  def length
+      [x,y]
+  end
   def tick(spin = "counterclockwise", angle=45) #галочка
      result = []
      x1=0
      y1=0
-     x = coord[2].to_f - coord[0].to_f
-     y = coord[3].to_f - coord[1].to_f
      alpha = Math.atan(y/x)+90.0.to_r    #вычисляем угол наклона отрезка к горизонтали в радианах; 90 - угол смещения координатной сетки приложения к декартовой
      #puts "alpha in degree: #{alpha.to_deg}"
      beta = angle.to_f.to_r + 90.0.to_r - alpha
      #puts "beta in degree: #{beta.to_deg}"
      alpha_deg = alpha.to_deg
-     if (alpha_deg < 0.1 and alpha_deg > -0.1)
+     nano = 1e-10
+     if (alpha_deg < nano and alpha_deg > -nano)
        alpha = 0.0   
        m = -y
-     elsif (alpha_deg < 180.1 and alpha_deg > 179.9)
+     elsif (alpha_deg < 180+nano and alpha_deg > 180-nano)
           m = y
      else m = x/Math.sin(alpha)
      end
@@ -42,21 +53,23 @@ class Line < Shape
        return result
   end
   def divide(parts)
-    result = []; x = []; y = []
-    x[0] = coord[0]
-    y[0] = coord[1]
-    x[parts] = coord[2]
-    y[parts] = coord[3]
-    w = (x[parts] - x[0])/parts #длинна отрезка после деления по оси 'x'
-    h = (y[parts] - y[0])/parts  #                            по оси 'y'
+    result = []; xx = []; yy = []
+    xx[0] = coord[0]
+    yy[0] = coord[1]
+    xx[parts] = coord[2]
+    yy[parts] = coord[3]
+    w = (xx[parts] - xx[0])/parts #длинна отрезка после деления по оси 'x'
+    h = (yy[parts] - yy[0])/parts  #                            по оси 'y'
     for i in 1...parts
-      x[i] = x[i-1] + w
-      y[i] = y[i-1] + h
+      xx[i] = xx[i-1] + w
+      yy[i] = yy[i-1] + h
     end
     for i in 0...parts
-      result << Line.new(x[i],y[i], x[i+1],y[i+1])
+      result << Line.new(xx[i],yy[i], xx[i+1],yy[i+1])
     end
     return result
   end
-
+  def grow(direction, distance)
+    Line.create(self.coord).move(distance[0],distance[1]).rotate(direction,[coord[2],coord[3]])
+  end
 end

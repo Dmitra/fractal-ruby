@@ -34,8 +34,8 @@ class Shape
       array = temp
       return self
   end 
-  def rotate(fi_deg, x, y) 
-    fi = -fi_deg.to_f.to_r
+  def rotate(fi_deg, center) 
+    fi = -fi_deg.to_f.to_r; x = center[0]; y = center[1]
     temp=[]
     self.array.each{|coor|  x1 = (coor[0]-x)*Math.cos(fi) + (coor[1]-y)*Math.sin(fi) + x
                             y1 =-(coor[0]-x)*Math.sin(fi) + (coor[1]-y)*Math.cos(fi) + y
