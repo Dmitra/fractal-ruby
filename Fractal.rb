@@ -26,17 +26,17 @@ class Fractal
       @iter.times{
         @shape.each{|line|
          arr = line.divide(3)
-         result += [arr[0]] + arr[1].tick("counterclockwise", 80) + [arr[2]]
+         result += [arr[0]] + arr[1].tick("counterclockwise", 45) + [arr[2]]
          result.shift
         }; @shape = result
       }
-    when "tree1"
+    when "tree_cutout"
       half1 = @shape
       half2 = @shape
       @iter.times{
         half1.each{|line|
           arr = line.divide(2)
-          result += [arr[0]] + arr[1].tick("clockwise")
+          result += [arr[0]] + arr[1].tick("clockwise", 45)
           result.shift
         }
         half1 = result
@@ -51,9 +51,20 @@ class Fractal
         half2 = result
       }
       @shape = half1 + half2
+    when "branched_tree"
+      i = [@shape[0]]
+      @iter.times{
+        result = []
+        i.each{|line| 
+          vector = line.vector*(0.7+0.2*rand)
+          angle = 15+25*rand
+          result << line.grow(-angle, vector) << line.grow(angle, vector)
+        } 
+        i = result
+        @shape += result
+      }
     end
     return @shape
   end
-  
 end
-#Fractal.new([100,100,200,200], "tick", 1).tick
+    

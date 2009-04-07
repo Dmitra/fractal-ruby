@@ -1,0 +1,10 @@
+Lines thickness
+
+Circle - draw until shorting round
+Rounded tree
+
+Firtree
+
+Fern
+
+Gravity emulation => branches sagging (прогибание)

@@ -1,27 +1,37 @@
 require 'Shape.rb'
 
 class Line < Shape
-  attr_accessor :coord
-  def initialize(coor1, coor2, coor3, coor4)
-    @coord = [coor1, coor2, coor3, coor4]
+  attr_reader :coord, :starting, :ending
+  def initialize(coor0, coor1, coor2, coor3) #by default Line should be created in absolute coordinates
+    @coord = [coor0, coor1, coor2, coor3]
+    @starting = Point.new(coor0, coor1)
+    @ending = Point.new(coor2, coor3)
   end
-  def self.create(arr)
+  def self.create(arr)                        #array of absolute coordinates
       Line.new(arr[0],arr[1],arr[2],arr[3])
+  end
+  def self.createLine(point1, point2)         #starting and ending points
+      Line.new(point1.x,point1.y,point2.x,point2.y)
+  end
+  def self.rel(coor0, coor1, coor2, coor3)    #create Line in relative coordinates
+      Line.new(coor0, coor1, coor0+coor2, coor1+coor3)
   end
   def array #this is array of coordinates, required by parent Shape class
     [@coord]
   end
   def array=(item)
     @coord=item[0]
+    @starting.x =item[0][0]; @starting.y = item[0][1]
+    @ending.x = item[0][2]; @ending.y = item[0][3]
   end
   def x #lengh of Line by X axis
-    coord[2].to_f - coord[0].to_f
+      ending.x - starting.x
   end
   def y #lengh of Line by Y axis
-    coord[3].to_f - coord[1].to_f
+      ending.y - starting.y
   end
-  def length
-      [x,y]
+  def vector #this is a Point to which starting point of Line directed
+      Point.new(x,y)
   end
   def tick(spin = "counterclockwise", angle=45) #галочка
      result = []
@@ -70,6 +80,6 @@ class Line < Shape
     return result
   end
   def grow(direction, distance)
-    Line.create(self.coord).move(distance[0],distance[1]).rotate(direction,[coord[2],coord[3]])
+      Line.rel(@ending.x, @ending.y, distance.x, distance.y).rotate(direction, @ending)
   end
 end
