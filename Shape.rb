@@ -16,7 +16,7 @@ class Shape
     array = temp
     return self    
   end
-  def midst
+  def midst #Point in the middle of the Shape
     for i in 0...self.array.length
       for j in [0,2]
         next1 = array[i][j]

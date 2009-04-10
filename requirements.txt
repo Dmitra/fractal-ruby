@@ -1,10 +1,24 @@
-Lines thickness
-
+Neuron grow (pixel by pixel)
+Lines thickness - grow in column (в толще)
 Circle - draw until shorting round
-Rounded tree
 
-Firtree
+Natural Objects	
+	Rounded tree
+	Leave
+	Firtree
+	Fern
 
-Fern
+Forces
+	Gravity emulation => branches sagging (прогибание)
 
-Gravity emulation => branches sagging (прогибание)
+Application facilities
+	Draw basic figure by mouse
+	Gauge
+	Multithreading
+
+Performance (sample fractals)
+15.0
+0.343
+0.218
+13.235
+0.563

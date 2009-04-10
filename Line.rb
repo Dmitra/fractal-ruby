@@ -59,8 +59,9 @@ class Line < Shape
        x3 = a;  y3 = -b
      end
      [[x1,y1, x3,y3],[x3,y3, x, y]].each{|line| 
-       result << Line.new(line[0]+=coord[0], line[1]+=coord[1], line[2]+=coord[0], line[3]+=coord[1])}
-       return result
+       result << Line.new(line[0]+=coord[0], line[1]+=coord[1], line[2]+=coord[0], line[3]+=coord[1])
+     }
+     return result
   end
   def divide(parts)
     result = []; xx = []; yy = []
