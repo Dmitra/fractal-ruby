@@ -15,10 +15,3 @@ Application facilities
 	Draw basic figure by mouse
 	Gauge
 	Multithreading
-
-Performance (sample fractals)
-15.0
-0.343
-0.218
-13.235
-0.563
