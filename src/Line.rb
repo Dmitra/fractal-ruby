@@ -1,4 +1,4 @@
-require 'Shape.rb'
+require_relative 'Shape.rb'
 
 class Line < Shape
   attr_reader :coord, :starting, :ending

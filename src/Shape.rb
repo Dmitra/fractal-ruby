@@ -1,4 +1,4 @@
-require 'Point.rb'
+require_relative 'Point.rb'
 
 class Shape
   attr_accessor :array  #this is array of array of coordinates
